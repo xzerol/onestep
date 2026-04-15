@@ -1,6 +1,6 @@
-# Amazon Selling Points Canvas
+# Amazon Main Image Studio
 
-Single-page canvas workspace for generating Amazon product selling-point copy and paired imagery.
+Single-page canvas workspace for generating Amazon product main images, selling-point copy, and exportable assets.
 
 中文版本见 [README.zh-CN.md](./README.zh-CN.md)。
 
@@ -54,9 +54,9 @@ npm run dev
 
 ## Notes
 
-- The workspace is a full-canvas page with left, middle, and right node columns.
-- `GeminiTextProvider` expects a JSON-only response with exactly 5 selling points.
-- `BananaImageProvider` supports direct image responses or submit-and-poll style providers.
+- The workspace is a full-canvas page with input, copy, and output zones.
+- The text generation provider expects a JSON-only response with exactly 5 selling points.
+- The image generation provider supports direct image responses or submit-and-poll style providers.
 - Runtime uploads and export artifacts are excluded from Git.
 
 ## Docker
