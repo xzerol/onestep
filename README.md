@@ -2,6 +2,8 @@
 
 Single-page canvas workspace for generating Amazon product selling-point copy and paired imagery.
 
+中文版本见 [README.zh-CN.md](./README.zh-CN.md)。
+
 ## Stack
 
 - Next.js 16 + App Router
