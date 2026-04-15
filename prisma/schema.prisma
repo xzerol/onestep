@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id             String           @id @default(cuid())
+  title          String
+  productName    String?
+  productInput   String
+  sourceImageUrl String?
+  status         String           @default("draft")
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  sellingPoints  SellingPoint[]
+  images         GeneratedImage[]
+}
+
+model SellingPoint {
+  id          String           @id @default(cuid())
+  projectId   String
+  order       Int
+  headline    String
+  body        String
+  imagePrompt String?
+  status      String           @default("ready")
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  project     Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  images      GeneratedImage[]
+
+  @@unique([projectId, order])
+}
+
+model GeneratedImage {
+  id             String        @id @default(cuid())
+  projectId      String
+  sellingPointId String
+  prompt         String
+  imageUrl       String?
+  provider       String
+  providerJobId  String?
+  status         String        @default("queued")
+  errorMessage   String?
+  attempt        Int           @default(1)
+  rawResponseJson String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  project        Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sellingPoint   SellingPoint  @relation(fields: [sellingPointId], references: [id], onDelete: Cascade)
+
+  @@unique([sellingPointId])
+}

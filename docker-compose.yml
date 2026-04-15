@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    working_dir: /app
+    command: sh -c "npm ci && npx prisma generate && npx prisma migrate dev --name init && npm run dev -- --hostname 0.0.0.0"
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      DATABASE_URL: file:./prisma/dev.db
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
