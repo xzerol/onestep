@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Project name: `一键生成亚马逊主图工作台`
+
 ## Commands
 
 ```bash
@@ -42,11 +44,11 @@ docker build -t amazon-selling-points .   # Production image
 
 **Provider Pattern**: AI calls are abstracted behind `TextProvider` and `ImageProvider` interfaces in `services/provider-types.ts`.
 - `GeminiTextProvider` — calls Gemini JSON API for exactly 5 selling points. It wraps raw JSON arrays into `{ sellingPoints: [...] }` before Zod validation.
-- `BananaImageProvider` — **despite the name, this now calls Gemini image generation** (`gemini-2.5-flash-image`) and saves base64 responses to `public/uploads/`. The provider value stored in DB is `"gemini"`.
+- `GeminiImageProvider` — calls Gemini image generation (`gemini-2.5-flash-image`) and saves base64 responses to `public/uploads/`. The provider value stored in DB is `"gemini"`.
 
 **API Routes**: Thin wrappers around services. They parse inputs with Zod, instantiate the service, and return `apiSuccess` / `apiError` from `lib/api.ts`.
 
-**Canvas UI**: `WorkspaceCanvas` renders a three-column node layout (input → selling points → images). On desktop it uses absolute positioning inside a large transform-scaled container; on mobile it falls back to a grid. Nodes can be dragged by their headers. Clicking generated images opens a lightbox.
+**Canvas UI**: `WorkspaceCanvas` renders a full-page canvas with input, selling-point, and output zones. On desktop it uses absolute positioning inside a large transform-scaled container; on mobile it falls back to a compact grid. Nodes can be dragged by their headers. Clicking generated images opens a lightbox.
 
 ### State Flow
 1. `POST /api/projects/:id/generate-copy` — generates 5 selling points, saves them, sets project status to `copy_ready`
@@ -65,7 +67,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - `DATABASE_URL` — e.g. `file:./dev.db`
 - `APP_URL` — e.g. `http://localhost:3000`
 
-`BANANAPRO_*` variables are present in the example but no longer used.
+`BANANAPRO_*` variables are present in the example but no longer used; the image provider is Gemini-based now.
 
 ### Important File Locations
 - `lib/schemas.ts` — Zod schemas for all API inputs
